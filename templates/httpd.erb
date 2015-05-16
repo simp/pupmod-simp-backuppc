@@ -1,0 +1,68 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^/BackupPC https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+<% if not @httpd_redirect_main then -%>
+
+RewriteRule ^/$ /BackupPC [R]
+<% end -%>
+
+LoadModule perl_module modules/mod_perl.so
+
+<Directory /opt/BackupPC/sbin>
+
+  SSLRequireSSL
+
+  Options +ExecCGI
+
+  AuthName "BackupPC"
+  AuthType Basic
+<%
+  t_auth_basic_provider = ""
+
+  if not @httpd_file_auth then
+    t_auth_basic_provider = 'file'
+  end
+
+  if not @httpd_ldap_auth then
+    t_auth_basic_provider += ' ldap'
+  end
+
+  if t_auth_basic_provider.nil? then
+    raise Puppet::ParseError.new("Error: You must specify either $httpd_file_auth or $httpd_ldap_auth!")
+  end
+-%>
+  AuthBasicProvider <%= t_auth_basic_provider %>
+<% if @httpd_file_auth then -%>
+  AuthBasicAuthoritative off
+  AuthUserFile /etc/BackupPC/apache.users
+<% end -%>
+<% if not @httpd_ldap_auth then -%>
+<%
+    if @httpd_ldap_servers.empty? then
+      raise Puppet::ParseError.new("Error: You cannot have a blank $httpd_ldap_servers!")
+    end
+-%>
+  AuthLDAPUrl "ldap://<%= Array(@httpd_ldap_servers).join(' ').gsub(/ldap:\/\//,"") %>/<%= @httpd_ldap_search %>" STARTTLS
+  AuthLDAPBindDN "<%= @httpd_ldap_binddn %>"
+  AuthLDAPBindPassword '<%= @httpd_ldap_bindpw.gsub(/'/, "\\\\'") %>'
+<%  if not @httpd_ldap_group.eql?('nil') then -%>
+<%
+    if @httpd_file_auth then
+      raise Puppet::ParseError.new("Error: You cannot use $httpd_file_auth and $httpd_ldap_group together.")
+    end
+-%>
+<% if @httpd_posix_group then -%>
+  AuthLDAPGroupAttributeIsDN off
+  AuthLDAPGroupAttribute memberUid
+<% end -%>
+  Require ldap-group <%= @httpd_ldap_group %>
+<% else -%>
+  AuthzLDAPAuthoritative off
+<%  end -%>
+<% end -%>
+  Require valid-user
+
+</Directory>
+
+Alias /BackupPC/images  /opt/BackupPC/html/
+ScriptAlias /BackupPC   /opt/BackupPC/sbin/BackupPC_Admin

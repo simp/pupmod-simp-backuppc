@@ -1,0 +1,17 @@
+---
+ldap::base_dn: 'cn=hostAuth,ou=Hosts,dc=example,dc=domain'
+client_nets: '1.2.3.4/19'
+ldap::uri: 'ldap://test.foo.domain'
+ldap::bind_dn: 'cn=hostAuth,ou=Hosts,dc=example,dc=domain'
+ldap::bind_pw: 'FakeCrazyAwesomePasswordStuffPlaceBacon'
+rsync::server: 'test.foo.domain'
+backuppc::backup_hosts:
+    - "test.foo.domain"
+backuppc::server::backup_hosts:
+    - "test.foo.domain"
+backuppc::server::httpd_ldap_servers:
+#    - %{ldap::uri}
+    - "%{hiera('ldap::uri')}"
+backuppc::server::httpd_ldap_search: "%{hiera('ldap::base_dn')}" #%{ldap::base_dn}
+backuppc::server::httpd_ldap_binddn: "%{hiera('ldap::bind_dn')}" #%{ldap::bind_dn}
+backuppc::server::httpd_ldap_bindpw: "%{hiera('ldap::bind_pw')}" #%{ldap::bind_pw}
