@@ -1,0 +1,21 @@
+---
+fixtures:
+  symlinks:
+    backuppc: "#{source_dir}"
+    apache: "#{source_dir}/../apache"
+    auditd: "#{source_dir}/../auditd"
+    augeasproviders_core: "#{source_dir}/../augeasproviders_core"
+    augeasproviders_grub: "#{source_dir}/../augeasproviders_grub"
+    common: "#{source_dir}/../common"
+    concat: "#{source_dir}/../concat"
+    iptables: "#{source_dir}/../iptables"
+    logrotate: "#{source_dir}/../logrotate"
+    pam: "#{source_dir}/../pam"
+    pki: "#{source_dir}/../pki"
+    rsync: "#{source_dir}/../rsync"
+    rsyslog: "#{source_dir}/../rsyslog"
+    ssh: "#{source_dir}/../ssh"
+    stdlib: "#{source_dir}/../stdlib"
+    sudo: "#{source_dir}/../sudo"
+    functions: "#{source_dir}/../functions"
+    simp: "#{source_dir}/../simp"

@@ -186,6 +186,9 @@ class backuppc::server (
     refreshonly => true
   }
 
+  package { 'BackupPC': ensure => 'latest' }
+  package { 'mod_perl': ensure => 'latest' }
+
   file { '/etc/BackupPC/apache.users':
     ensure  => 'file',
     owner   => 'backuppc',
@@ -209,6 +212,7 @@ class backuppc::server (
     mode    => '0600',
     content => ssh_autokey('bpc_user','2048',true),
     require => [
+      File["${data_dir}/.ssh"],
       Ssh_authorized_key['bpc_user'],
       Package['BackupPC']
     ]
@@ -219,9 +223,6 @@ class backuppc::server (
     allowdupe => false,
     require   => Package['BackupPC']
   }
-
-  package { 'BackupPC': ensure => 'latest' }
-  package { 'mod_perl': ensure => 'latest' }
 
   service { 'backuppc':
     ensure     => 'running',
