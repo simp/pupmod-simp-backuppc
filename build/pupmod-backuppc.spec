@@ -35,7 +35,7 @@ for dir in $dirs; do
 done
 
 mkdir -p %{buildroot}/usr/share/simp/tests/modules/backuppc
-cp README %{buildroot}/%{prefix}/backuppc
+cp README.md %{buildroot}/%{prefix}/backuppc
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
