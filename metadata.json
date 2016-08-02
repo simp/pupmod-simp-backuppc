@@ -1,6 +1,6 @@
 {
-  "name":    "pupmod-simp-backuppc",
-  "version": "5.0.0",
+  "name":    "simp-backuppc",
+  "version": "4.1.1",
   "author":  "simp",
   "summary": "Manage backuppc",
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
   "tags": [ "simp", "backuppc" ],
   "dependencies": [
     {
-      "name": "simp-common",
+      "name": "simp-stdlib",
       "version_requirement": ">= 4.2.0"
     },
     {
@@ -22,7 +22,7 @@
       "version_requirement": ">= 4.1.0"
     },
     {
-      "name": "simp-concat",
+      "name": "simp-simpcat",
       "version_requirement": ">= 4.0.0"
     },
     {

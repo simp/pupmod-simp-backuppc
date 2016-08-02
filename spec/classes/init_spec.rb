@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'backuppc' do
-  #let(:title) {'backuppc'}
-
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       let(:facts) do
@@ -13,7 +11,7 @@ describe 'backuppc' do
 
         it { is_expected.to create_class('backuppc') }
         it { is_expected.to compile.with_all_deps }
-      
+
         it do
           is_expected.to contain_file('/etc/ssh/local_keys/bpc_user').with({
             'ensure' => 'file',
@@ -22,7 +20,7 @@ describe 'backuppc' do
             'mode'   => '0640'
           })
         end
-      
+
         it do
           is_expected.to contain_user('bpc_user').with(
             'ensure'     => 'present',
@@ -36,7 +34,7 @@ describe 'backuppc' do
             'home'       => '/var/local/bpc_user'
           )
         end
-      
+
         it do
           is_expected.to contain_group('bpc_user').with(
             'ensure'    => 'present',
@@ -44,7 +42,7 @@ describe 'backuppc' do
             'gid'       => '610'
           )
         end
-      
+
         context 'check_ssh_authorized_key_single_host' do
           let(:params) { {:backup_hosts => ['test.foo.domain']} }
           it do

@@ -1,0 +1,3 @@
+Requires: pupmod-simp-apache >= 4.1.0-4
+Requires: pupmod-simp-ssh >= 4.1.0-7
+Obsoletes: pupmod-backuppc-test

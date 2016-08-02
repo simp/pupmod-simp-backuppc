@@ -78,10 +78,10 @@ class backuppc (
   }
 
   file { $key_target:
-    ensure  => 'file',
-    owner   => 'bpc_user',
-    group   => 'root',
-    mode    => '0640'
+    ensure => 'file',
+    owner  => 'bpc_user',
+    group  => 'root',
+    mode   => '0640'
   }
 
   ssh_authorized_key { 'bpc_user':
